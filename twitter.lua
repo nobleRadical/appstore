@@ -10,17 +10,81 @@ print(text)
 term.setTextColor(oldColor)
 end
 
+--colorWrite - colorPrint's cousin.
+function colorWrite(text, color)
+local oldColor = term.getTextColor()
+term.setTextColor(color)
+write(text)
+term.setTextColor(oldColor)
+end
+
+--choice provides the user a list of values to choose from, and returns their choice.
+--choices = { string .. }
+function choice(choices)
+local startPoint, _ = term.getCursorPos()
+for k, v in ipairs(choices) do
+print(" "..v)
+end
+term.setCursorPos(startPoint, 1)
+term.write(">")
+local cursor = 1
+local input = nil
+repeat
+local _, key = os.pullEvent("key")
+if key = keys.up then
+term.setCursorPos(startPoint + cursor-1, 1)
+term.write(" ")
+cursor = cursor - 1
+if cursor < 1 then
+cursor = #choices
+end
+term.setCursorPos(startPoint + cursor-1, 1)
+term.write(">")
+elseif key = keys.down then
+term.setCursorPos(startPoint + cursor-1, 1)
+term.write(" ")
+cursor = cursor + 1
+if cursor > #choices then
+cursor = 1
+end
+term.setCursorPos(startPoint + cursor-1, 1)
+term.write(">")
+term.setCursorPos(startPoint + cursor-1, 1)
+elseif key = keys.enter then
+input = choices[cursor]
+end
+until input
+return input
+end
 
 -- Connect to the internet.
 peripheral.find("modem", rednet.open)
 
 --for logging in a new user.
-function verifyUser()
+function verifyTempUser()
 local man = peripheral.find("manipulator")
 if man == nil then return nil end
 local name = man.getName()
 return name
 end
+
+--for managing a login saved on the computer.
+function loadUser(username_check)
+local cykey = cy.getcykey(username_check)
+local line = io.lines(".cykey")()
+if cykey == line then
+return username
+else
+return nil
+end
+--
+function saveUser(username)
+local cykey = cy.getcykey(username)
+local Hnd = fs.open(".cykey", "w")
+Hnd.write(cykey)
+Hnd.close()
+end
+
 
 -- Load twitter log, or an empty log.
 function load()
@@ -71,10 +135,22 @@ function getLatestPost(log)
 local pst = table.remove(log.posts)
 if pst ~= nil then
 table.insert(log.posts, pst)
-return pst.author, pst.contents
+return {author=pst.author, contents=pst.contents}
 else
 return "None", "Nobody's posted yet. Change that!"
 end
+end
+--utility function
+function displayPost(post)
+colorPrint(post.author, colors.lightBlue)
+print(post.contents)
+end
+--
+function postEditor(post)
+print("Author: @"..post.author)
+print("Message: ")
+local input = read()
+post.contents = input
 end
 
 
@@ -119,10 +195,9 @@ function client()
     --intro babble
     print("Welcome to Twitter!")
     print("latest post:")
-    local author, contents = getLatestPost(twitterLog)
-    colorPrint(author, colors.lightBlue)
-    print(contents)
-        
+    local latestPost = getLatestPost(twitterLog)
+    displayPost(latestPost)
+       
     --command list, backed by later function defs
     local commands = {
     ["new post"] = newpost,
@@ -130,6 +205,8 @@ function client()
     ["more posts"] = listposts,
     ["exit"] = exit,
     }
+
+    loggedInUser = nil -- for saving a login
     --seperate keys vs values of commands
     local commandkeys = {}
     for k, _ in pairs(commands) do
@@ -142,7 +219,7 @@ while true do
     colorPrint("Choose an action.", colors.blue)
     local input = read(nil, commandkeys, nil, "use uparrow and downarrow to choose an action.")
     if commands[input] ~= nil then
-    
+   
         term.clear()
         term.setCursorPos(1, 1)
         local code, val = pcall(commands[input])
@@ -153,39 +230,30 @@ while true do
         if val == "exit" then
         break
         end
-    
+   
     else
         colorPrint("Invalid command.", colors.red)
         sleep(0.5)
         term.clear()
         term.setCursorPos(1,1)
     end    
-    
+   
 end
 end
 
 --define commands
 function newpost()
-print("Verify your identity. Place a bound inspection module in the manipulator.")
-local currentUser
-repeat
-write("press any key to scan.\r")
-os.pullEvent("key")
-currentUser = verifyUser()
-if not currentUser then
-write("Not found.                \r")
-end
-until currentUser
+local currentUser = login()
 
 print("Access granted. Hello, "..currentUser)
 term.clear()
 term.setCursorPos(1,1)
 
+local post_to_add = { author = currentUser, contents = nil}
 print("New Post")
-print("Author: @"..currentUser)
-print("Message: ")
-local input = read()
-addPost(twitterLog, { author = currentUser, contents = input})
+postEditor(post_to_add)
+
+addPost(twitterLog, post_to_add)
 save(twitterLog)
 network_POST(twitterLog)
 end
@@ -219,6 +287,29 @@ break
 end
 
 end
+end
+--
+function login()
+if loggedInUser ~= nil then
+print("Logged in as "..loggenInUser..". Continue?")
+if choice{"yes", "no"} == "yes" then return loggedInUser end
+print("Verify your identity. Place a bound inspection module in the manipulator.")
+local currentUser
+repeat
+write("press any key to scan.\r")
+os.pullEvent("key")
+currentUser = verifyTempUser()
+if not currentUser then
+write("Not found.                \r")
+end
+until currentUser
+pritn("Stay logged in?")
+if choice{"yes", "no"} == "yes" then
+loggedInUser = currentUser
+else
+loggedInUser = nil
+end
+return currentUser
 end
 --
 function exit()
