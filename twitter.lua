@@ -1,4 +1,4 @@
---twitter v0.99
+--twitter v0.991
 --by nobleRadical
 
 --colorPrint - a utility function that should be
@@ -183,7 +183,7 @@ end
 --update the twitterlog against the network.
 function updateTwitterLog()
 local tempLog = network_GET()
-if tempLog.version > twitterLog.version then
+if tempLog and tempLog.version > twitterLog.version then
 twitterLog = tempLog
 save(twitterLog)
 end 
