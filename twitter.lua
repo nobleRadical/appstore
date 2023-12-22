@@ -21,7 +21,7 @@ end
 --choice provides the user a list of values to choose from, and returns their choice.
 --choices = { string .. }
 function choice(choices)
-local startPoint, _ = term.getCursorPos()
+local _, startPoint = term.getCursorPos()
 for k, v in ipairs(choices) do
 print(" "..v)
 end
