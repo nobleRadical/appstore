@@ -31,7 +31,7 @@ local cursor = 1
 local input = nil
 repeat
 local _, key = os.pullEvent("key")
-if key = keys.up then
+if key == keys.up then
 term.setCursorPos(startPoint + cursor-1, 1)
 term.write(" ")
 cursor = cursor - 1
@@ -40,7 +40,7 @@ cursor = #choices
 end
 term.setCursorPos(startPoint + cursor-1, 1)
 term.write(">")
-elseif key = keys.down then
+elseif key == keys.down then
 term.setCursorPos(startPoint + cursor-1, 1)
 term.write(" ")
 cursor = cursor + 1
@@ -50,7 +50,7 @@ end
 term.setCursorPos(startPoint + cursor-1, 1)
 term.write(">")
 term.setCursorPos(startPoint + cursor-1, 1)
-elseif key = keys.enter then
+elseif key == keys.enter then
 input = choices[cursor]
 end
 until input
