@@ -1,4 +1,4 @@
---twitter v0.97
+--twitter v0.98
 --by nobleRadical
 
 --colorPrint - a utility function that should be
@@ -69,21 +69,22 @@ return name
 end
 
 --for managing a login saved on the computer.
-function loadUser(username_check)
-local cykey = cy.getcykey(username_check)
-local line = io.lines(".cykey")()
-if cykey == line then
-return username
-else
-return nil
-end
---
-function saveUser(username)
-local cykey = cy.getcykey(username)
-local Hnd = fs.open(".cykey", "w")
-Hnd.write(cykey)
-Hnd.close()
-end
+-- function loadUser(username_check)
+-- local cykey = cy.getcykey(username_check)
+-- local line = io.lines(".cykey")()
+-- if cykey == line then
+-- return username
+-- else
+-- return nil
+-- end
+-- end
+-- --
+-- function saveUser(username)
+-- local cykey = cy.getcykey(username)
+-- local Hnd = fs.open(".cykey", "w")
+-- Hnd.write(cykey)
+-- Hnd.close()
+-- end
 
 
 -- Load twitter log, or an empty log.
