@@ -1,4 +1,4 @@
---twitter v0.96
+--twitter v0.97
 --by nobleRadical
 
 --colorPrint - a utility function that should be
@@ -291,8 +291,8 @@ end
 --
 function login()
 if loggedInUser ~= nil then
-print("Logged in as "..loggenInUser..". Continue?")
-if choice{"yes", "no"} == "yes" then return loggedInUser end
+print("Logged in as "..loggedInUser..". Continue?")
+if choice{"yes", "no"} == "yes" then return loggedInUser end end
 print("Verify your identity. Place a bound inspection module in the manipulator.")
 local currentUser
 repeat
@@ -303,7 +303,7 @@ if not currentUser then
 write("Not found.                \r")
 end
 until currentUser
-pritn("Stay logged in?")
+print("Stay logged in?")
 if choice{"yes", "no"} == "yes" then
 loggedInUser = currentUser
 else
