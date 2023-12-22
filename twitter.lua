@@ -1,4 +1,4 @@
---twitter v0.992
+--twitter v0.993
 --by nobleRadical
 
 --colorPrint - a utility function that should be
@@ -202,7 +202,7 @@ function client()
     --command list, backed by later function defs
     local commands = {
     ["new post"] = newpost,
-    ["posts by"] = postsby,
+    ["log in"] = login,
     ["more posts"] = listposts,
     ["exit"] = exit,
     }
@@ -254,6 +254,10 @@ local post_to_add = { author = currentUser, contents = nil}
 print("New Post")
 postEditor(post_to_add)
 
+if post_to_add.contents:find("^%s*$") then
+    print("Post empty. Cancelled.")
+    return
+end
 addPost(twitterLog, post_to_add)
 save(twitterLog)
 network_POST(twitterLog)
