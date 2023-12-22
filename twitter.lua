@@ -1,4 +1,4 @@
---twitter v0.98
+--twitter v0.99
 --by nobleRadical
 
 --colorPrint - a utility function that should be
@@ -107,16 +107,7 @@ fileHnd.close()
 end
 
 twitterLog = load()
---update the twitterlog against the network.
-function updateTwitterLog()
-local tempLog = network_GET()
-if tempLog.version > twitterLog.version then
-twitterLog = tempLog
-save(twitterLog)
-end
 
-end
-updateTwitterLog()
 
 -- log file structure:
 -- log.version :: number
@@ -189,6 +180,15 @@ return one.version > two.version end)
 return messages[1]
 end
 
+--update the twitterlog against the network.
+function updateTwitterLog()
+local tempLog = network_GET()
+if tempLog.version > twitterLog.version then
+twitterLog = tempLog
+save(twitterLog)
+end 
+end
+updateTwitterLog()
 
 --coroutine of the main loop
 --manages the UI and user input
