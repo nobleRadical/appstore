@@ -1,4 +1,4 @@
---twitter v0.991
+--twitter v0.992
 --by nobleRadical
 
 --colorPrint - a utility function that should be
@@ -25,31 +25,31 @@ local startPoint, _ = term.getCursorPos()
 for k, v in ipairs(choices) do
 print(" "..v)
 end
-term.setCursorPos(startPoint, 1)
+term.setCursorPos(1, startPoint)
 term.write(">")
 local cursor = 1
 local input = nil
 repeat
 local _, key = os.pullEvent("key")
 if key == keys.up then
-term.setCursorPos(startPoint + cursor-1, 1)
+term.setCursorPos(1, startPoint + cursor-1)
 term.write(" ")
 cursor = cursor - 1
 if cursor < 1 then
 cursor = #choices
 end
-term.setCursorPos(startPoint + cursor-1, 1)
+term.setCursorPos(1, startPoint + cursor-1)
 term.write(">")
 elseif key == keys.down then
-term.setCursorPos(startPoint + cursor-1, 1)
+term.setCursorPos(1, startPoint + cursor-1)
 term.write(" ")
 cursor = cursor + 1
 if cursor > #choices then
 cursor = 1
 end
-term.setCursorPos(startPoint + cursor-1, 1)
+term.setCursorPos(1, startPoint + cursor-1)
 term.write(">")
-term.setCursorPos(startPoint + cursor-1, 1)
+term.setCursorPos(1, startPoint + cursor-1)
 elseif key == keys.enter then
 input = choices[cursor]
 end
