@@ -1,4 +1,4 @@
---twitter v0.999
+--twitter v0.9991
 --by nobleRadical
 
 --colorPrint - a utility function that should be
@@ -28,8 +28,8 @@ end
 end
     
     
-    --choice provides the user a list of values to choose from, and returns their choice.
-    --choices = { string .. }
+--choice provides the user a list of values to choose from, and returns their choice.
+--choices = { string .. }
 function choice(choices)
 local _, startPoint = term.getCursorPos()
 local cursor = 1
@@ -144,7 +144,8 @@ hnd.close()
 local maxX, maxY = term.getSize()
 local x, y = term.getCursorPos()
 local oldTerm = term.current()
-local win = window.create(oldTerm, 1, y, maxX/2, maxY)
+print(y)
+local win = window.create(oldTerm, 1, y, maxX, maxY/4)
 term.redirect(win)
 shell.run("edit .tempBuffer")
 term.redirect(oldTerm)
