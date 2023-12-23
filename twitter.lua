@@ -229,7 +229,7 @@ while true do
     print(" ")
     print(" ")
     colorPrint("Choose an action.", colors.blue)
-    local input = read(nil, commandkeys, nil, "use uparrow and downarrow to choose an action.")
+    local input = choice(commandkeys)
     if commands[input] ~= nil then
    
         term.clear()
