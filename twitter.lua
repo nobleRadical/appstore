@@ -1,4 +1,4 @@
---twitter v0.996
+--twitter v0.997
 --by nobleRadical
 
 --colorPrint - a utility function that should be
@@ -18,31 +18,30 @@ write(text)
 term.setTextColor(oldColor)
 end
 
---choice provides the user a list of values to choose from, and returns their choice.
---choices = { string .. }
+--internal function
+function _redraw(cursor, startPoint)
+term.setCursorPos(1, startPoint)
+for k, v in ipairs(choices) do
+local char = (cursor == k) and ">" or " "
+print(char..v)
+end
+    
+    
+    --choice provides the user a list of values to choose from, and returns their choice.
+    --choices = { string .. }
 function choice(choices)
 local _, startPoint = term.getCursorPos()
-for k, v in ipairs(choices) do
-print(" "..v)
-end
-term.setCursorPos(1, startPoint)
-term.write(">")
 local cursor = 1
 local input = nil
 repeat
+_redraw(cursor, startPoint)
 local _, key = os.pullEvent("key")
 if key == keys.up then
-term.setCursorPos(1, startPoint + cursor-1)
-term.write(" ")
 cursor = cursor - 1
 if cursor < 1 then
 cursor = #choices
 end
-term.setCursorPos(1, startPoint + cursor-1)
-term.write(">")
 elseif key == keys.down then
-term.setCursorPos(1, startPoint + cursor-1)
-term.write(" ")
 cursor = cursor + 1
 if cursor > #choices then
 cursor = 1
