@@ -1,4 +1,4 @@
---twitter v0.993
+--twitter v0.994
 --by nobleRadical
 
 --colorPrint - a utility function that should be
@@ -141,8 +141,19 @@ end
 function postEditor(post)
 print("Author: @"..post.author)
 print("Message: ")
-local input = read()
-post.contents = input
+local hnd = fs.open(".tempBuffer", "w")
+hnd.write(post.contents or "")
+hnd.close()
+local maxX, maxY = term.getSize()
+local x, y = term.getCursorPos()
+local oldTerm = term.current()
+local win = window.create(oldTerm, 1, y, maxX/2, maxY)
+term.redirect(win)
+shell.run("edit .tempBuffer")
+term.redirect(oldTerm)
+local hnd = fs.open(".tempBuffer", "r"),
+post.contents = hnd.readAll()
+hnd.close()
 end
 
 
