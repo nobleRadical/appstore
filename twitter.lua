@@ -25,6 +25,7 @@ for k, v in ipairs(choices) do
 local char = (cursor == k) and ">" or " "
 print(char..v)
 end
+end
     
     
     --choice provides the user a list of values to choose from, and returns their choice.
