@@ -19,7 +19,7 @@ term.setTextColor(oldColor)
 end
 
 --internal function
-function _redraw(cursor, startPoint)
+function _redraw(choices, cursor, startPoint)
 term.setCursorPos(1, startPoint)
 for k, v in ipairs(choices) do
 local char = (cursor == k) and ">" or " "
@@ -35,7 +35,7 @@ local _, startPoint = term.getCursorPos()
 local cursor = 1
 local input = nil
 repeat
-_redraw(cursor, startPoint)
+_redraw(choices, cursor, startPoint)
 local _, key = os.pullEvent("key")
 if key == keys.up then
 cursor = cursor - 1
