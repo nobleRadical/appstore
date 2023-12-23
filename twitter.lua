@@ -46,9 +46,6 @@ cursor = cursor + 1
 if cursor > #choices then
 cursor = 1
 end
-term.setCursorPos(1, startPoint + cursor-1)
-term.write(">")
-term.setCursorPos(1, startPoint + cursor-1)
 elseif key == keys.enter then
 input = choices[cursor]
 end
