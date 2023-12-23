@@ -1,4 +1,4 @@
---twitter v1.0
+--twitter v1.01
 --by nobleRadical
 
 --colorPrint - a utility function that should be
@@ -152,6 +152,7 @@ term.redirect(oldTerm)
 local hnd = fs.open(".tempBuffer", "r")
 post.contents = hnd.readAll()
 hnd.close()
+term.setCursorPos(x, y)
 end
 
 
@@ -262,6 +263,7 @@ term.setCursorPos(1,1)
 local post_to_add = { author = currentUser, contents = nil}
 print("New Post")
 postEditor(post_to_add)
+print(post_to_add.contents)
 
 if post_to_add.contents:find("^%s*$") then
     print("Post empty. Cancelled.")
@@ -272,12 +274,9 @@ save(twitterLog)
 network_POST(twitterLog)
 end
 --
-function postsby()
-print("Not implemented!")
-end
+
 --
 function listposts()
-textutils.pagedPrint(textutils.serialise(twitterLog))
 local posts = twitterLog.posts
 local maxPointer = table.getn(posts)
 local pointer = maxPointer
@@ -317,7 +316,7 @@ if not currentUser then
 write("Not found.                \r")
 end
 until currentUser
-print("Stay logged in?")
+print("Logged in as @"..currentUser..". Stay logged in?")
 if choice{"yes", "no"} == "yes" then
 loggedInUser = currentUser
 else
