@@ -1,4 +1,4 @@
---twitter v0.997
+--twitter v0.998
 --by nobleRadical
 
 --colorPrint - a utility function that should be
