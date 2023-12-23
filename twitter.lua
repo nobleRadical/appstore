@@ -151,7 +151,7 @@ local win = window.create(oldTerm, 1, y, maxX/2, maxY)
 term.redirect(win)
 shell.run("edit .tempBuffer")
 term.redirect(oldTerm)
-local hnd = fs.open(".tempBuffer", "r"),
+local hnd = fs.open(".tempBuffer", "r")
 post.contents = hnd.readAll()
 hnd.close()
 end
