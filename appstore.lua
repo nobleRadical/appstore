@@ -4,8 +4,8 @@
 function getFile(path)
     local RQ = http.get("https://raw.githubusercontent.com/nobleRadical/appstore/main/" .. path)
     HttpCode, HttpMessage = RQ.getResponseCode()
-    if code == 200 then
-        return EQ.readAll()
+    if HttpCode == 200 then
+        return RQ.readAll()
     end
 end
 
@@ -46,7 +46,7 @@ if command == "install" or command == "update" then
     if not remoteFile then
         if HttpCode ~= 200 then
             printError "Failed to connect to server."
-            print("Code: " .. tostring(HttpCode))
+            print("Code " .. tostring(HttpCode))
             print("Reason: " .. tostring(HttpMessage))
         else
             printError "Program not found."
@@ -98,8 +98,10 @@ else
         print(progFile)
     else
         print "Cannot connect to server."
+        print("Code " .. tostring(HttpCode))
+        print("Reason: " .. tostring(HttpMessage))
     end
-    print[[Usage:
+    printError[[Usage:
 appstore install|update program
 appstore check program]]
 end
