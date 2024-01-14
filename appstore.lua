@@ -1,4 +1,4 @@
---appstore v1.05
+--appstore v1.06
 --by nobleRadical
 -- gets a file from the remote repository.
 function getFile(path)
@@ -42,7 +42,7 @@ command = arg[1]
 program = arg[2]
 
 function main()
-if not fs.exists("apis/kasutils.lua") then
+if not fs.exists("apis/kasutils.lua") or program == "kasutils" then
     print"kasutils is required for most programs. Install?"
     local s = read()
     if s == "n" or s == "no" then
