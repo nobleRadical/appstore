@@ -1,4 +1,4 @@
---kasutils v1.02
+--kasutils v1.03
 --by nobleRadical
 
 -- colorPrint - a utility function that should be
@@ -20,10 +20,12 @@ end
     
 --internal function
 function _redraw(choices, cursor, startPoint)
-    term.setCursorPos(1, startPoint)
+    local drawPoint = startPoint
     for k, v in ipairs(choices) do
+        term.setCursorPos(1, drawPoint)
         local char = (cursor == k) and ">" or " "
-        print(char..v)
+        term.write(char..v)
+        drawPoint = drawPoint + 1
     end
 end
         
@@ -34,6 +36,9 @@ function choice(choices)
     local _, startPoint = term.getCursorPos()
     local cursor = 1
     local input = nil
+    for k, v in ipairs(choices) do
+        print(" "..v)
+    end
     repeat
         _redraw(choices, cursor, startPoint)
         local _, key = os.pullEvent("key")
