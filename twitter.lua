@@ -1,4 +1,4 @@
---twitter v1.03
+--twitter v1.04
 --by nobleRadical
 
 assert(fs.exists("apis/kasutils.lua"), [[Requires kasutils. If you have appstore, use
@@ -186,7 +186,7 @@ print("Access granted. Hello, "..currentUser)
 term.clear()
 term.setCursorPos(1,1)
 
-local post_to_add = { author = currentUser, contents = nil}
+local post_to_add = { author = currentUser, author_id = os.getComputerID(), contents = nil}
 print("New Post")
 postEditor(post_to_add)
 print(post_to_add.contents)
