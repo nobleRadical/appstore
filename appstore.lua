@@ -1,4 +1,4 @@
---appstore v1.0
+--appstore v1.01
 --by nobleRadical
 -- gets a file from the remote repository.
 function getFile(path)

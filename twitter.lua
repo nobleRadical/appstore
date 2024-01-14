@@ -1,4 +1,4 @@
---twitter v1.01
+--twitter v1.02
 --by nobleRadical
 
 assert(fs.exists("apis/kasutils.lua"), [[Requires kasutils. If you have appstore, use
