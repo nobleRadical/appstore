@@ -1,4 +1,4 @@
---appstore v1.01
+--appstore v1.02
 --by nobleRadical
 -- gets a file from the remote repository.
 function getFile(path)
@@ -86,7 +86,7 @@ if command == "install" or command == "update" then
         print("Program is already up-to-date.")
     end
 elseif command == "check" then
-    local remoteFile = getFile(program)
+    local remoteFile = getFile(program .. ".lua")
     if not remoteFile then
         if HttpCode ~= 200 then
             printError "Failed to connect to server."
