@@ -58,6 +58,11 @@ if program == "kasutils" then
 end
 
 local remoteFile, reason = getFile(program .. ".lua")
+if reason == "Not Found" then
+    programs()
+    usage()
+    return
+end
 if not remoteFile then
     printError(reason)
     return
