@@ -1,4 +1,4 @@
---appstore v1.06
+--appstore v1.10
 --by nobleRadical
 -- gets a file from the remote repository.
 function getFile(path)
@@ -75,7 +75,10 @@ end
 
 if not localVersion or remoteVersion > localVersion then
     print(not localVersion and "Install? Y/N" or "Update? Y/N")
-    
+    local input = read()
+    if input == "n" or "no" then
+        return
+    end
     Lfilewrite(program .. ".lua", remoteFile)
     print("Program updated.")
 else
