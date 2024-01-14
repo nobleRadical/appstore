@@ -102,7 +102,7 @@ function installUtils()
 end
 
 function programs()
-    local progFile, reason = getFile("apis/kasutils.lua")
+    local progFile, reason = getFile("apis/programs.md")
     if not progFile then
         printError(reason)
         return
