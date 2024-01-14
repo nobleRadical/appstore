@@ -38,7 +38,7 @@ function checkVersion(file)
     end
 end
 
-program = arg[1]
+program = arg[1] or ""
 
 function main()
 if not fs.exists("apis/kasutils.lua") then
