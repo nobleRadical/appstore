@@ -56,10 +56,12 @@ end
 
 -- returns string of path
 function fileread(path)
-    local fileHnd = fs.open(path, "r")
-    local string = fileHnd.readAll()
-    fileHnd.close()
-    return string
+    if fs.exists(path) then
+        local fileHnd = fs.open(path, "r")
+        local string = fileHnd.readAll()
+        fileHnd.close()
+        return string
+    end
 end
 
 -- overwrites file with string
