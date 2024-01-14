@@ -57,7 +57,7 @@ end
 --
 function displayPost(post)
 kasutils.colorWrite(post.author, colors.lightBlue)
-kasutils.colorWrite("#" .. tostring(post.author_id), colors.red)
+kasutils.colorPrint("#" .. tostring(post.author_id), colors.red)
 print(post.contents)
 end
 --
