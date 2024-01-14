@@ -1,4 +1,4 @@
---appstore v1.02
+--appstore v1.03
 --by nobleRadical
 -- gets a file from the remote repository.
 function getFile(path)
@@ -68,7 +68,7 @@ if command == "install" or command == "update" then
         return
     end
     local remoteVersion = checkVersion(remoteFile)
-    local localVersion = checkVersion(Lfileread(program))
+    local localVersion = checkVersion(Lfileread(program .. ".lua"))
     print("Remote version: v" .. tostring(remoteVersion))
 
     if localVersion then
@@ -98,7 +98,7 @@ elseif command == "check" then
         return
     end
     local remoteVersion = checkVersion(remoteFile)
-    local localVersion = checkVersion(Lfileread(program))
+    local localVersion = checkVersion(Lfileread(program .. ".lua"))
     print("Remote version: v" .. tostring(remoteVersion))
 
     if localVersion then
