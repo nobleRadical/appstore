@@ -1,4 +1,4 @@
---appstore v1.04
+--appstore v1.05
 --by nobleRadical
 -- gets a file from the remote repository.
 function getFile(path)
@@ -7,6 +7,7 @@ function getFile(path)
         return RQ.readAll()
     else
         return nil, reason
+    end
 end
 
 -- returns string of path
