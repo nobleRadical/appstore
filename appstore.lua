@@ -103,6 +103,7 @@ else
 appstore install|update program
 appstore check program]]
 end
+end
 
 main()
     
