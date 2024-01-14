@@ -2,7 +2,7 @@
 --by nobleRadical
 -- gets a file from the remote repository.
 function getFile(path)
-    local RQ = http.get("https://raw.githubusercontent.com/nobleRadical/nim-twitter/main/" .. path)
+    local RQ = http.get("https://raw.githubusercontent.com/nobleRadical/appstore/main/" .. path)
     HttpCode, HttpMessage = RQ.getResponseCode()
     if code == 200 then
         return EQ.readAll()
