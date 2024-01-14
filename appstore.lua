@@ -1,12 +1,12 @@
---appstore v1.03
+--appstore v1.04
 --by nobleRadical
 -- gets a file from the remote repository.
 function getFile(path)
-    local RQ = http.get("https://raw.githubusercontent.com/nobleRadical/appstore/main/" .. path)
-    HttpCode, HttpMessage = RQ.getResponseCode()
-    if HttpCode == 200 then
+    local RQ, reason = http.get("https://raw.githubusercontent.com/nobleRadical/appstore/main/" .. path)
+    if RQ then
         return RQ.readAll()
-    end
+    else
+        return nil, reason
 end
 
 -- returns string of path
@@ -56,15 +56,9 @@ if not fs.exists("apis/kasutils.lua") then
     end
 end
 if command == "install" or command == "update" then
-    local remoteFile = getFile(program .. ".lua")
+    local remoteFile, reason = getFile(program .. ".lua")
     if not remoteFile then
-        if HttpCode ~= 200 then
-            printError "Failed to connect to server."
-            print("Code " .. tostring(HttpCode))
-            print("Reason: " .. tostring(HttpMessage))
-        else
-            printError "Program not found."
-        end
+        printError(reason)
         return
     end
     local remoteVersion = checkVersion(remoteFile)
@@ -86,15 +80,9 @@ if command == "install" or command == "update" then
         print("Program is already up-to-date.")
     end
 elseif command == "check" then
-    local remoteFile = getFile(program .. ".lua")
+    local remoteFile, reason = getFile(program .. ".lua")
     if not remoteFile then
-        if HttpCode ~= 200 then
-            printError "Failed to connect to server."
-            print("Code: " .. tostring(HttpCode))
-            print("Reason: " .. tostring(HttpMessage))
-        else
-            printError "Program not found."
-        end
+        printError(reason)
         return
     end
     local remoteVersion = checkVersion(remoteFile)
