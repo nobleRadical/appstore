@@ -1,87 +1,12 @@
 --twitter v1.01
 --by nobleRadical
 
---colorPrint - a utility function that should be
--- part of the standard library. (nobleRadical)
-function colorPrint(text, color)
-local oldColor = term.getTextColor()
-term.setTextColor(color)
-print(text)
-term.setTextColor(oldColor)
-end
-
---colorWrite - colorPrint's cousin.
-function colorWrite(text, color)
-local oldColor = term.getTextColor()
-term.setTextColor(color)
-write(text)
-term.setTextColor(oldColor)
-end
-
---internal function
-function _redraw(choices, cursor, startPoint)
-term.setCursorPos(1, startPoint)
-for k, v in ipairs(choices) do
-local char = (cursor == k) and ">" or " "
-print(char..v)
-end
-end
-    
-    
---choice provides the user a list of values to choose from, and returns their choice.
---choices = { string .. }
-function choice(choices)
-local _, startPoint = term.getCursorPos()
-local cursor = 1
-local input = nil
-repeat
-_redraw(choices, cursor, startPoint)
-local _, key = os.pullEvent("key")
-if key == keys.up then
-cursor = cursor - 1
-if cursor < 1 then
-cursor = #choices
-end
-elseif key == keys.down then
-cursor = cursor + 1
-if cursor > #choices then
-cursor = 1
-end
-elseif key == keys.enter then
-input = choices[cursor]
-end
-until input
-return input
-end
+assert(fs.exists("apis/kasutils.lua"), [[Requires kasutils. If you have appstore, use
+appstore install kasutils to install.]])
+kasutils = require "apis.kasutils"
 
 -- Connect to the internet.
 peripheral.find("modem", rednet.open)
-
---for logging in a new user.
-function verifyTempUser()
-local man = peripheral.find("manipulator")
-if man == nil then return nil end
-local name = man.getName()
-return name
-end
-
---for managing a login saved on the computer.
--- function loadUser(username_check)
--- local cykey = cy.getcykey(username_check)
--- local line = io.lines(".cykey")()
--- if cykey == line then
--- return username
--- else
--- return nil
--- end
--- end
--- --
--- function saveUser(username)
--- local cykey = cy.getcykey(username)
--- local Hnd = fs.open(".cykey", "w")
--- Hnd.write(cykey)
--- Hnd.close()
--- end
 
 
 -- Load twitter log, or an empty log.
@@ -111,6 +36,7 @@ twitterLog = load()
 -- log.posts :: array[posts]
 --     post :: table
 --     post.author :: string
+--     post.author_id :: number (computer's ID)
 --     post.contents :: string
 
 
@@ -119,7 +45,7 @@ function addPost(log, post)
 table.insert(log.posts, post)
 log.version = log.version + 1
 end
---utility function
+--
 function getLatestPost(log)
 local pst = table.remove(log.posts)
 if pst ~= nil then
@@ -129,9 +55,10 @@ else
 return "None", "Nobody's posted yet. Change that!"
 end
 end
---utility function
+--
 function displayPost(post)
-colorPrint(post.author, colors.lightBlue)
+kasutils.colorWrite(post.author, colors.lightBlue)
+kasutils.colorWrite("#" .. tostring(post.author_id), colors.red)
 print(post.contents)
 end
 --
@@ -227,8 +154,8 @@ function client()
 while true do
     print(" ")
     print(" ")
-    colorPrint("Choose an action.", colors.blue)
-    local input = choice(commandkeys)
+    kasutils.colorPrint("Choose an action.", colors.blue)
+    local input = kasutils.choice(commandkeys)
     if commands[input] ~= nil then
    
         term.clear()
@@ -243,7 +170,7 @@ while true do
         end
    
     else
-        colorPrint("Invalid command.", colors.red)
+        kasutils.colorPrint("Invalid command.", colors.red)
         sleep(0.5)
         term.clear()
         term.setCursorPos(1,1)
@@ -284,7 +211,7 @@ while true do
 term.clear()
 term.setCursorPos(1,1)
 print("Post "..tostring(pointer).." / "..tostring(maxPointer))
-colorPrint(posts[pointer].author, colors.lightBlue)
+kasutils.colorPrint(posts[pointer].author, colors.lightBlue)
 print(posts[pointer].contents)
 print(" ")
 print("< or > to navigate. q to exit.")
@@ -305,19 +232,11 @@ end
 function login()
 if loggedInUser ~= nil then
 print("Logged in as "..loggedInUser..". Continue?")
-if choice{"yes", "no"} == "yes" then return loggedInUser end end
-print("Verify your identity. Place a bound inspection module in the manipulator.")
-local currentUser
-repeat
-write("press any key to scan.\r")
-os.pullEvent("key")
-currentUser = verifyTempUser()
-if not currentUser then
-write("Not found.                \r")
-end
-until currentUser
+if kasutils.choice{"yes", "no"} == "yes" then return loggedInUser end end
+print "Provide your username."
+local currentUser = read()
 print("Logged in as @"..currentUser..". Stay logged in?")
-if choice{"yes", "no"} == "yes" then
+if kasutils.choice{"yes", "no"} == "yes" then
 loggedInUser = currentUser
 else
 loggedInUser = nil
@@ -326,7 +245,7 @@ return currentUser
 end
 --
 function exit()
-colorPrint("Goodbye!", colors.yellow)
+kasutils.colorPrint("Goodbye!", colors.yellow)
 sleep(0.5)
 term.clear()
 term.setCursorPos(1, 1)
