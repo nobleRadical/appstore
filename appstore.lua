@@ -41,6 +41,20 @@ command = arg[1]
 program = arg[2]
 
 function main()
+if not fs.exists("apis/kasutils.lua") then
+    print"kasutils is required for most programs. Install?"
+    local s = read()
+    if s == "n" or s == "no" then
+        print"suit yourself..."
+    else
+        local utilFile = getFile("apis/kasutils.lua")
+        if utilFile then
+            Lfilewrite("apis/kasutils.lua", utilFile)
+        else
+            print"Could not connect to server."
+        end
+    end
+end
 if command == "install" or command == "update" then
     local remoteFile = getFile(program .. ".lua")
     if not remoteFile then

@@ -4,5 +4,3 @@ Welcome to nobleRadical's appstore! Programs on offer:
 -- crafter
     run this program on a crafty turtle to have it constantly craft
     anything in its inventory. 
--- kasutils
-    Required library for all apps.
