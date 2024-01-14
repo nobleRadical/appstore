@@ -56,7 +56,7 @@ end
 
 -- returns string of path
 function fileread(path)
-    local fileHnd = open(path, "r")
+    local fileHnd = fs.open(path, "r")
     local string = fileHnd.readAll()
     fileHnd.close()
     return string
@@ -64,7 +64,7 @@ end
 
 -- overwrites file with string
 function filewrite(path, string)
-    local fileHnd = open(path, "w")
+    local fileHnd = fs.open(path, "w")
     fileHnd.write(string)
     fileHnd.close()
 end

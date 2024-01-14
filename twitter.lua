@@ -9,7 +9,7 @@ kasutils = require "apis.kasutils"
 peripheral.find("modem", rednet.open)
 
 
--- Load twitter log, or an empty log.
+-- Load twitter log from file, or an empty log.
 function load()
 local twitterLog = nil
 local fileHnd = fs.open(".twitterlog", "r")
@@ -30,7 +30,6 @@ end
 
 twitterLog = load()
 
-
 -- log file structure:
 -- log.version :: number
 -- log.posts :: array[posts]
@@ -50,9 +49,9 @@ function getLatestPost(log)
 local pst = table.remove(log.posts)
 if pst ~= nil then
 table.insert(log.posts, pst)
-return {author=pst.author, contents=pst.contents}
+return {author=pst.author, contents=pst.contents, author_id=pst.author_id}
 else
-return "None", "Nobody's posted yet. Change that!"
+return {author="Nobody", contents="Nobody's posted yet.", author_id=0}
 end
 end
 --
@@ -102,7 +101,7 @@ end
 function network_POST(log)
 rednet.broadcast({ type="POST", payload=log}, "twitter")
 end
---Send a GET request.
+--Send a GET request, and return the most recent response.
 function network_GET()
 rednet.broadcast({ type="GET" }, "twitter")
 local messages = {}
@@ -211,8 +210,7 @@ while true do
 term.clear()
 term.setCursorPos(1,1)
 print("Post "..tostring(pointer).." / "..tostring(maxPointer))
-kasutils.colorPrint(posts[pointer].author, colors.lightBlue)
-print(posts[pointer].contents)
+displayPost(posts[pointer])
 print(" ")
 print("< or > to navigate. q to exit.")
 local _, key = os.pullEvent("key")
