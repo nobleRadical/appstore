@@ -81,7 +81,7 @@ end
 if not localVersion or remoteVersion > localVersion then
     print(not localVersion and "Install? Y/N" or "Update? Y/N")
     local input = read()
-    if input == "n" or "no" then
+    if string.lower(input) == "n" or string.lower(input) == "no" then
         return
     end
     Lfilewrite(program .. ".lua", remoteFile)
