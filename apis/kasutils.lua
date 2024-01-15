@@ -19,7 +19,7 @@ write(text)
 end
     
 --internal function
-function _redraw(choices, cursor, startPoint)
+local function _redraw(choices, cursor, startPoint)
     local drawPoint = startPoint
     for k, v in ipairs(choices) do
         term.setCursorPos(1, drawPoint)
