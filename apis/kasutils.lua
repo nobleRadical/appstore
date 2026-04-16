@@ -76,4 +76,12 @@ function filewrite(path, string)
     fileHnd.close()
 end
 
-return {colorPrint = colorPrint, colorWrite = colorWrite, choice = choice, fileread = fileread, filewrite = filewrite}
+--prints a small message and waits for keypress before continuing
+function pause(message) -- defaults to [press any key]
+    local tX,tY = term.getCursorPos()
+    print(message or "[press any key]")
+    os.pullEvent("key")
+    term.setCursorPos(tX,tY)
+end
+
+return {colorPrint = colorPrint, colorWrite = colorWrite, choice = choice, fileread = fileread, filewrite = filewrite, pause = pause}
